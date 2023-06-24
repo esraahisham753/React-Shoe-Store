@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import Footer from "./Footer";
 import Header from "./Header";
@@ -8,7 +8,18 @@ import Details from "./Details";
 import Cart from "./Cart";
 
 export default function App() {
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem("cart")) ?? [];
+    } catch {
+      console.error("The cart cannot be parsed into json");
+      return [];
+    }
+  });
+
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }, [cart]);
 
   function addToCart(id, sku) {
     setCart((items) => {
@@ -22,6 +33,24 @@ export default function App() {
       }
     });
   }
+
+  function updateQuantity(sku, quantity) {
+    setCart((items) => {
+      const itemInCart = items.find((i) => i.sku === sku);
+      if (itemInCart) {
+        if (quantity === 0) {
+          return items.filter((i) => i.sku !== sku);
+        } else {
+          return items.map((i) => {
+            return i.sku === sku ? { ...i, quantity: quantity } : i;
+          });
+        }
+      } else {
+        return items;
+      }
+    });
+  }
+
   return (
     <>
       <div className="content">
@@ -34,7 +63,10 @@ export default function App() {
               path="/:category/:id"
               element={<Details addToCart={addToCart} />}
             />
-            <Route path="/cart" element={<Cart />} />
+            <Route
+              path="/cart"
+              element={<Cart cart={cart} updateQuantity={updateQuantity} />}
+            />
           </Routes>
         </main>
       </div>
