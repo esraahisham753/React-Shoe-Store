@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { saveShippingAddress } from "./services/shippingService";
 
 // Declaring outside component to avoid recreation on each render
 const emptyAddress = {
@@ -6,11 +7,25 @@ const emptyAddress = {
   country: "",
 };
 
-export default function Checkout({ cart }) {
+export default function Checkout({ cart, emptyCart }) {
   const [address, setAddress] = useState(emptyAddress);
+  const STATUS = {
+    IDLE: "IDLE",
+    ISSUBMITTING: "ISSUBMITTING",
+    SUBMITTED: "SUBMITTED",
+    COMPLETED: "COMPLETED",
+  };
+  const [status, setStatus] = useState(STATUS.IDLE);
+  const [saveError, setSaveError] = useState(null);
 
   function handleChange(e) {
-    // TODO
+    e.persist();
+    setAddress((curAddress) => {
+      return {
+        ...curAddress,
+        [e.target.id]: e.target.value,
+      };
+    });
   }
 
   function handleBlur(event) {
@@ -18,7 +33,22 @@ export default function Checkout({ cart }) {
   }
 
   async function handleSubmit(event) {
-    // TODO
+    event.preventDefault();
+    setStatus(STATUS.ISSUBMITTING);
+    try {
+      await saveShippingAddress(address);
+      emptyCart();
+      setStatus(STATUS.COMPLETED);
+    } catch (e) {
+      console.log(e);
+      setSaveError(e);
+    }
+  }
+
+  if (saveError) throw saveError;
+
+  if (status === STATUS.COMPLETED) {
+    return <h1>Thanks for shopping</h1>;
   }
 
   return (
@@ -59,6 +89,7 @@ export default function Checkout({ cart }) {
             type="submit"
             className="btn btn-primary"
             value="Save Shipping Info"
+            disabled={status === STATUS.ISSUBMITTING}
           />
         </div>
       </form>
