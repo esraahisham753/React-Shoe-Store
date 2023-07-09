@@ -36,6 +36,7 @@ export default function Checkout({ cart, emptyCart }) {
     event.preventDefault();
     setStatus(STATUS.ISSUBMITTING);
     try {
+      //console.log(address);
       await saveShippingAddress(address);
       emptyCart();
       setStatus(STATUS.COMPLETED);

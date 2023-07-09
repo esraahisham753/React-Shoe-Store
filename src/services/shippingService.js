@@ -8,10 +8,13 @@ export async function getShippingAddress(userId) {
 }
 
 export async function saveShippingAddress(address) {
+  console.log("address", address);
+  console.log("url", baseUrl + "shippingAddress");
   return fetch(baseUrl + "shippingAddress", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
     },
     body: JSON.stringify(address),
   });
