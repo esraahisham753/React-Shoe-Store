@@ -17,6 +17,11 @@ export default function Checkout({ cart, emptyCart }) {
   };
   const [status, setStatus] = useState(STATUS.IDLE);
   const [saveError, setSaveError] = useState(null);
+  const [touched, setTouched] = useState({});
+
+  // Derived states
+  const errors = getErrors(address);
+  const isValid = Object.keys(errors).length === 0;
 
   function handleChange(e) {
     e.persist();
@@ -30,20 +35,36 @@ export default function Checkout({ cart, emptyCart }) {
 
   function handleBlur(event) {
     // TODO
+    setTouched((cur) => {
+      return { ...cur, [event.target.id]: true };
+    });
   }
 
   async function handleSubmit(event) {
     event.preventDefault();
     setStatus(STATUS.ISSUBMITTING);
-    try {
-      //console.log(address);
-      await saveShippingAddress(address);
-      emptyCart();
-      setStatus(STATUS.COMPLETED);
-    } catch (e) {
-      console.log(e);
-      setSaveError(e);
+    if (isValid) {
+      try {
+        //console.log(address);
+        await saveShippingAddress(address);
+        emptyCart();
+        setStatus(STATUS.COMPLETED);
+      } catch (e) {
+        console.log(e);
+        setSaveError(e);
+      }
+    } else {
+      setStatus(STATUS.SUBMITTED);
     }
+  }
+
+  function getErrors(address) {
+    let result = {};
+
+    if (!address.city) result.city = "City is required";
+    if (!address.country) result.country = "Country is required";
+
+    return result;
   }
 
   if (saveError) throw saveError;
@@ -55,6 +76,15 @@ export default function Checkout({ cart, emptyCart }) {
   return (
     <>
       <h1>Shipping Info</h1>
+      <div role="alert">
+        {!isValid && status === STATUS.SUBMITTED && (
+          <ul>
+            {Object.keys(errors).map((key) => {
+              return <li>{errors[key]}</li>;
+            })}
+          </ul>
+        )}
+      </div>
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="city">City</label>
@@ -66,6 +96,7 @@ export default function Checkout({ cart, emptyCart }) {
             onBlur={handleBlur}
             onChange={handleChange}
           />
+          <p role="alert">{}</p>
         </div>
 
         <div>
