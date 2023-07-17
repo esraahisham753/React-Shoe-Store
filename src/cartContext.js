@@ -30,6 +30,9 @@ export function CartProvider(props) {
 }
 
 export function useCart() {
-    const context = useContext(CartContext);
-    return context;
-} 
+  const context = useContext(CartContext);
+  if (!context) {
+    throw new Error("ERROR: Context is called outside of its provider");
+  }
+  return context;
+}
