@@ -19,12 +19,12 @@ export default function App() {
             <Route path="/:category" element={<Products />} />
             <Route
               path="/:category/:id"
-              element={<Details dispatch={dispatch} />}
+              element={<Details />}
             />
             <Route path="/cart" element={<Cart />} />
             <Route
               path="/checkout"
-              element={<Checkout cart={cart} dispatch={dispatch} />}
+              element={<Checkout />}
             />
           </Routes>
         </main>
