@@ -7,8 +7,11 @@ import { Routes, Route } from "react-router-dom";
 import Details from "./Details";
 import Cart from "./Cart";
 import Checkout from "./Checkout";
+import { useCart } from "./cartContext";
 
 export default function App() {
+  const { dispatch } = useCart();
+
   return (
     <>
       <div className="content">
@@ -17,14 +20,11 @@ export default function App() {
           <Routes>
             <Route path="/" element={<h1>Welcome to Carved Rock Fitness</h1>} />
             <Route path="/:category" element={<Products />} />
-            <Route
-              path="/:category/:id"
-              element={<Details />}
-            />
+            <Route path="/:category/:id" element={<Details />} />
             <Route path="/cart" element={<Cart />} />
             <Route
               path="/checkout"
-              element={<Checkout />}
+              element={<Checkout dispatch={dispatch} />}
             />
           </Routes>
         </main>
