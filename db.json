@@ -94,6 +94,16 @@
       "city": "Oxford",
       "country": "United Kingdom",
       "id": 7
+    },
+    {
+      "city": "Michigan",
+      "country": "USA",
+      "id": 8
+    },
+    {
+      "city": "Las vigas",
+      "country": "USA",
+      "id": 9
     }
   ]
 }
