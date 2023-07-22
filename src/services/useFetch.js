@@ -36,3 +36,8 @@ export default function useFetch(url) {
 
   return { data, error, loading };
 }
+
+export function Fetch({ url, children }) {
+  const { data, error, loading } = useFetch(url);
+  return children(data, error, loading);
+}

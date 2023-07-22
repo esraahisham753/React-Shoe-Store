@@ -28,7 +28,7 @@ export default class Checkout extends React.Component {
     return Object.keys(errors).length === 0;
   }
 
-  handleChange(e) {
+  handleChange = (e) => {
     e.persist();
     this.setState((state) => {
       return {
@@ -38,17 +38,17 @@ export default class Checkout extends React.Component {
         },
       };
     });
-  }
+  };
 
-  handleBlur(event) {
+  handleBlur = (event) => {
     // TODO
     event.persist();
     this.setState((state) => {
       return { touched: { ...state.touched, [event.target.id]: true } };
     });
-  }
+  };
 
-  async handleSubmit(event) {
+  handleSubmit = async (event) => {
     event.preventDefault();
     this.setState({ status: STATUS.ISSUBMITTING });
     if (this.isValid()) {
@@ -62,7 +62,7 @@ export default class Checkout extends React.Component {
     } else {
       this.setState({ status: STATUS.SUBMITTED });
     }
-  }
+  };
 
   getErrors(address) {
     let result = {};
