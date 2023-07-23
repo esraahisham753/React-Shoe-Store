@@ -1,3 +1,29 @@
+## Topics covered in this repo
+
+- Deciding How and When to Declare State
+
+- Managing Local and Remote State
+
+- Implementing Routing
+
+- Managing Shared, Derived, and Immutable State
+
+- Implementing Form Validation
+
+- Managing State via Refs
+
+- Managing Complex State with useReducer
+
+- Sharing State and Functions via Context
+
+- Managing State in Class Components
+
+- Managing State via Third Party Libraries
+
+
+
+#uxdesigner #frontenddevelopment #javascript #reactjs #pluralsight 
+
 ## Quick Start
 
 Run the following commands:
