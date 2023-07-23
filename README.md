@@ -20,10 +20,6 @@
 
 - Managing State via Third Party Libraries
 
-
-
-#uxdesigner #frontenddevelopment #javascript #reactjs #pluralsight 
-
 ## Quick Start
 
 Run the following commands:
